@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Cursor</title>
+<style>
+
+    .custom-cursor {
+      position: fixed;
+      width: 100px; 
+      height: 100px; 
+      background-image: url('https://www.wizard.financial/static/media/wizaart-img.56787174.gif'); /* Path to your custom image */
+      background-size: cover;
+      pointer-events: none; 
+      z-index: 9999; 
+
+      cursor: none;
+      animation: cursorMove 20s linear infinite alternate;
+    }
+  
+    @keyframes cursorMove {
+      0% {
+        transform: translateY(0) translateX(0);
+      }
+      100% {
+        transform: translateY(-10px) translateX(10px); 
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor element -->
+<div class="custom-cursor"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const customCursor = document.querySelector('.custom-cursor');
+
+  // Define variables for animation
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  const easingFactor = 0.01; 
+
+
+  document.addEventListener('click', function(e) {
+    targetX = e.clientX - (customCursor.offsetWidth / 2); 
+    targetY = e.clientY - (customCursor.offsetHeight / 2); 
+  });
+
+  function animateCursor() {
+    // Calculate the distance to move per frame
+    const dx = (targetX - currentX) * easingFactor;
+    const dy = (targetY - currentY) * easingFactor;
+
+    // Update current position
+    currentX += dx;
+    currentY += dy;
+
+    // Update cursor position
+    customCursor.style.left = currentX + 'px';
+    customCursor.style.top = currentY + 'px';
+
+    // Request next frame
+    requestAnimationFrame(animateCursor);
+  }
+
+  // Start animation loop
+  animateCursor();
+});
+</script>
+
+</body>
+</html>
